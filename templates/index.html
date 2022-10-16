@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Home</title>
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900&display=swap" rel="stylesheet">
+		<link href="{{ url_for("static", filename="stylesheets/main.css") }}" type="text/css" rel="stylesheet">
+		<script type="text/javascript" src="{{ url_for("static", filename="scripts/index.js") }}"></script>
+	</head>
+	<body>
+		<h1>The Groovemaker</h1>
+		<div id="wrapper">
+			<div id="song-select">
+					<input type="text" placeholder="Search" name="query" id="search-box"></input>
+					<input type="submit" id="search-btn" value="SEARCH" onclick="search()"></input>
+				<div id="song-item-wrapper">
+				</div> <!-- #song-item-wrapper -->
+			</div> <!-- #song-select -->
+			<div id="selected-songs">
+			</div>
+			<div id="instrument-select">
+				<form action="/play" id="form" method="post">
+					<input type="hidden" name="songs" id="songs" value=""></input>
+					<input type="hidden" name="instruments" id="instruments" value=""></input>
+					<button type="button" name="play_button" id="play" onclick="play_song()">Play</input>
+					<button type="button" name="save_button" id="save" onclick="save_song()">Save</button>
+				</form>
+				<button type="button" name="button" id="update" onclick="retrieve_instruments()">Update</button>
+			</div> <!-- #instrument-select -->
+		</div> <!-- #wrapper -->
+	</body>
+</html>

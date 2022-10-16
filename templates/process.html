@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>Process</title>
+	</head>
+	<body>
+		Processing
+	</body>
+</html>
+<script>
+function send_post(url, dict, callback) {
+	var http = new XMLHttpRequest();
+	var params = JSON.stringify(dict);
+	http.open("POST", url, true);
+	http.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+	http.onreadystatechange = function() {
+		if(http.readyState == 4 && http.status == 200) {
+			response = JSON.parse(http.responseText);
+			if (typeof callback === "function") callback(response);
+		}
+	}
+	http.send(params);
+}
+send_post("/test", {"hi": "hello"}, function(response) {
+		console.log(response);
+});
+
+
+	var allSelectedSongs = [];
+	var allSelectedInstruments = [];
+
+	function save() {
+		// save file
+	}
+
+	function updateInstrumentBoxes() {
+		/*
+		sends POST request to flask with the selected selectedSongs
+		flask returns list of instruments found in these selectedSongs
+		we update checkboxes
+		*/
+		var http = new XMLHttpRequest();
+		var url = "/retrieve_instruments";
+		var params = JSON.stringify({"songs": allSelectedSongs});
+		http.open("POST", url, true);
+
+		http.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+
+		http.onreadystatechange = function() {
+			if(http.readyState == 4 && http.status == 200) {
+				instruments = JSON.parse(http.responseText)["instruments"];
+				renderCheckboxes(instruments);
+			}
+		}
+		http.send(params);
+	}
+
+	function renderCheckboxes(instruments){
+		var checkboxWrappers = document.getElementsByClassName('select-wrapper'); // find checkbox wrappers
+		for (var i=checkboxWrappers.length -1;i>=0;i--) { // remove all current checkboxes
+			checkboxWrappers[i].remove();
+		}
+		var form = document.getElementById("form");
+		for (var i=0; i < instruments.length; i++) {  // add a checkbox for each new instrument
+			instrument = instruments[i];
+			form.innerHTML += `<div class="select-wrapper"><input class="instrument-checkbox" type="checkbox" name="instrument${i+1}" value="${instrument}"></input><label for="instrument${i+1}">${instrument}</label></div>`;
+		}
+		updateCheckboxListeners();
+	}
+
+	function updateCheckboxListeners() {
+		// add listeners (checks for being clicked, runs function) to checkboxes
+		var checkboxes = document.getElementsByClassName('instrument-checkbox');
+		Array.from(checkboxes).forEach(function(element){
+			element.addEventListener("click", updateInstruments)
+		});
+	}
+
+	function updateInstruments() {
+		/*
+		update instrument list in form (hidden input)
+		*/
+		currentInstrument = this.value;
+		if (allSelectedInstruments.includes(currentInstrument)) {
+			allSelectedInstruments.splice(allSelectedInstruments.indexOf(currentInstrument), 1);
+		}
+		else {
+			allSelectedInstruments.push(currentInstrument);
+		}
+		var instruments = document.getElementById("instruments");
+		instruments.value = allSelectedInstruments;
+	}
+
+	function updateRemoveListeners() {
+		// add listeners (checks for being clicked, runs function) to X buttons
+		var selectedSongButtons = document.getElementsByClassName('remove-item');
+		Array.from(selectedSongButtons).forEach(function(element){
+			element.addEventListener("click", removeSelected);
+		});
+	}
+	updateRemoveListeners();
+
+	function removeSelected() {
+		// removes songs from selected list when you press X
+		this.parentElement.remove();
+		var parentValue = parseInt(this.parentElement.getAttribute("data-id"));
+		allSelectedSongs.splice(allSelectedSongs.indexOf(parentValue), 1);
+		document.getElementById("songs").value = allSelectedSongs;
+	}
+
+	function updateAddListeners() {
+		// add listeners (checks for being clicked, runs function) to + buttons
+		var searchResultsButtons = document.getElementsByClassName('add-item');
+		Array.from(searchResultsButtons).forEach(function(element){
+			element.addEventListener("click", addSelected); // run function updateActive when any song is clicked
+		});
+	}
+	updateAddListeners();
+
+	function addSelected(){
+		// adds songs to selected list when you press X
+		var parentSongName = this.parentElement.textContent.replace("+", "");
+		var parentValue = parseInt(this.parentElement.getAttribute("data-id"));
+		var selectedSongs = document.getElementById("selected-songs");
+		selectedSongs.innerHTML += `<div class="song-item selected-song-item" data-id=${parentValue}><p>${parentSongName}</p><button type="button" class="remove-item">&#x2715;</button></div> <!-- .song-item -->`
+		updateRemoveListeners();
+		allSelectedSongs.push(parentValue);
+		document.getElementById("songs").value = allSelectedSongs;
+	}
+
+	if ( window.history.replaceState ) {
+		// stops browser asking you to confirm resubmission of form on refresh
+	  window.history.replaceState( null, null, window.location.href );
+	}
+</script>
