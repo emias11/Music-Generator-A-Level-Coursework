@@ -12,11 +12,7 @@ The midi files are then cleaned, before being analysed. The following parameters
 - pitch
 - note length
 
-
-
-
-Tempo changes, control changes, and note sequences will remain as stated in Approach 2. Unless time allows, program changes will be ignored as only apply for songs over 16 instruments, unlikely (and can ensure if this is the case, it will just ignore these messages). 
-
+By using the probabilities of transferring from one state to another, the tempo changes, control changes and note sequences are then generated for a new midi file using the collected data from the input songs. 
 
 Packaged Used:
 Mido (Python package)
