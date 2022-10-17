@@ -16,14 +16,19 @@ By using the probabilities of transferring from one state to another, the tempo 
 
 Packaged Used:
 Mido (Python package)
-  Used to manipulate the MIDI files. This is helpful as MIDI messages are encoded as 8-bit words, and thus are difficult to read without a suitable container- which Mido   provides. Also makes tasks like creating new MIDI messages or identifying MIDI message types easy. 
-Beautiful Soup (Python package) 
-  Used to scrape the MIDI websites in order to retrieve MIDI files 
+- Used to manipulate the MIDI files. This is helpful as MIDI messages are encoded as 8-bit words, and thus are difficult to read without a suitable container- which Mido   provides. Also makes tasks like creating new MIDI messages or identifying MIDI message types easy. 
+
+Beautiful Soup (Python package)
+- Used to scrape the MIDI websites in order to retrieve MIDI files 
+
 Requests (Python package)
-  Used to send HTTP(S) requests 
+- Used to send HTTP(S) requests 
+
 Pygame (Python package) 
-  Used to play back any MIDI output on the console 
+- Used to play back any MIDI output on the console 
+
 Flask (Python package)
-  Used to provide the user interface for the user to interact with the user program. It provides an interface between the backend to allow the user input to be passed     through to the main algorithm and the correct output passed back to be shown on the user program
+- Used to provide the user interface for the user to interact with the user program. It provides an interface between the backend to allow the user input to be passed through to the main algorithm and the correct output passed back to be shown on the user program
+
 Numpy
-  Used to provide added mathematical functionality that will be necessary when creating the Markov Chains
+- Used to provide added mathematical functionality that will be necessary when creating the Markov Chains
